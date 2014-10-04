@@ -41,12 +41,12 @@ public class LoggedActivity extends Activity {
         Intent myIntent = getIntent();
         String picpath = myIntent.getStringExtra("bgpicpath");
         RelativeLayout mylayout = (RelativeLayout) findViewById(R.id.actlog);
-        Toast.makeText(getApplicationContext(), "picpath" + picpath, Toast.LENGTH_LONG).show();
+//        Toast.makeText(getApplicationContext(), "picpath" + picpath, Toast.LENGTH_LONG).show();
 
         if(! picpath.matches("") ){
             mylayout.setBackground(Drawable.createFromPath(picpath));
         }else{
-            Toast.makeText(getApplicationContext(), "picpath" + picpath, Toast.LENGTH_LONG);
+//            Toast.makeText(getApplicationContext(), "picpath" + picpath, Toast.LENGTH_LONG);
             mylayout.setBackground(getResources().getDrawable(R.drawable.starbg));
         }
         int count = myIntent.getIntExtra("count", 1000);

@@ -83,9 +83,6 @@ public class MyActivity extends Activity {
         this.addBut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!isConnected()){
-                    Toast.makeText(getApplicationContext(), "Connection failed", Toast.LENGTH_LONG);
-                }
                 String userString = username.getText().toString();
                 String pwString = password.getText().toString();
                 if(userString.matches("")){
@@ -100,9 +97,15 @@ public class MyActivity extends Activity {
                 if(post(ServerUrl + "/add", userString, pwString, loginIntent)){
                     startActivity(loginIntent);
                 }else{
-                    Vibrator vi = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-                    vi.vibrate(new long[]{100,300}, -1);
-                    errorText.setText(errCodeToMsg(loginIntent.getIntExtra("errCode", 0)) + "\nError Code = " + loginIntent.getIntExtra("errCode", 0));
+                    int errCode = loginIntent.getIntExtra("errCode", 0);
+                    if(errCode == 0){
+                        errorText.setText("");
+                        Toast.makeText(getApplicationContext(), "Network Problem", Toast.LENGTH_LONG).show();
+                    }else{
+                        Vibrator vi = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+                        vi.vibrate(new long[]{100,300}, -1);
+                        errorText.setText(errCodeToMsg(errCode) + "\nError Code = " + errCode);
+                    }
                 }
             }
         });
@@ -127,9 +130,16 @@ public class MyActivity extends Activity {
                 if(post(ServerUrl + "/login", userString, pwString, loginIntent)){
                     startActivity(loginIntent);
                 }else{
-                    Vibrator vi = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-                    vi.vibrate(new long[]{100,300}, -1);
-                    errorText.setText(errCodeToMsg(loginIntent.getIntExtra("errCode", 0)) + "\nError Code = " + loginIntent.getIntExtra("errCode", 0));
+                    int errCode = loginIntent.getIntExtra("errCode", 0);
+                    if(errCode == 0){
+                        errorText.setText("");
+                        Toast.makeText(getApplicationContext(), "Network Problem", Toast.LENGTH_LONG).show();
+
+                    }else{
+                        Vibrator vi = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+                        vi.vibrate(new long[]{100,300}, -1);
+                        errorText.setText(errCodeToMsg(errCode) + "\nError Code = " + errCode);
+                    }
                 }
             }
         });
@@ -166,7 +176,7 @@ public class MyActivity extends Activity {
             this.bg = d;
             this.bgset = true;
             this.bgpicpath = picturePath;
-            Toast.makeText(getApplicationContext(), Drawable.createFromPath(picturePath).toString(), Toast.LENGTH_LONG).show();
+//            Toast.makeText(getApplicationContext(), Drawable.createFromPath(picturePath).toString(), Toast.LENGTH_LONG).show();
         }
     }
     @Override
@@ -238,7 +248,7 @@ public class MyActivity extends Activity {
                 success = true;
             }
         } catch (Exception e) {
-            errorText.setText(e.toString());
+//            errorText.setText(e.toString());
         }
         // 11. return true if errCode == 1
         return success;
